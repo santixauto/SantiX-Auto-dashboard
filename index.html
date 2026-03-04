@@ -1,1 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Bot Dashboard</title>
+</head>
 
+<body>
+
+<h1>Telegram Bot Control Panel</h1>
+
+<h2>Total Users</h2>
+<div id="users">Loading...</div>
+
+<h2>Broadcast</h2>
+<textarea id="msg"></textarea>
+<br>
+<button onclick="broadcast()">Send</button>
+
+<script>
+
+async function loadUsers(){
+let r = await fetch("/api/users");
+let d = await r.json();
+document.getElementById("users").innerText=d.total;
+}
+
+async function broadcast(){
+let text=document.getElementById("msg").value;
+
+await fetch("/api/broadcast",{
+method:"POST",
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({message:text})
+})
+
+alert("Sent");
+}
+
+loadUsers()
+
+</script>
+
+</body>
+</html>
